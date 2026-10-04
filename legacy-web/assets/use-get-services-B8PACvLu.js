@@ -1,0 +1,1 @@
+import{G as E,J as c}from"./index-PbeRhxf-.js";import{a as p}from"./services.api-DLCmexMX.js";const T=({page:e,search_text:r,limit:s,client_id:o,admin_id:t,payment_status:u,date_from:S,date_to:a,service_type_id:i,branch_id:m,status:y})=>E({queryKey:[c.SERVICES,e,r,s,o,t,u,S,a,i,m,y],queryFn:p});export{T as u};

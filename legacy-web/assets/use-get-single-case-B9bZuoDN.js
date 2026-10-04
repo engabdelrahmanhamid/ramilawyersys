@@ -1,0 +1,1 @@
+import{G as S,J as r}from"./index-PbeRhxf-.js";import{g as s}from"./cases-B1Ochzhl.js";const t=({case_id:e})=>S({queryKey:[r.SINGLE_CASE,e],queryFn:()=>s({queryKey:[r.SINGLE_CASE,e]}),enabled:!!e});export{t as u};

@@ -1,0 +1,1 @@
+import{h as s,bl as r}from"./index-PbeRhxf-.js";const a=e=>{const{token:n}=s(o=>o.user);return{isLoading:!1,refetch:()=>{window.open(`${r}${e}&token=${n}`,"_blank")},error:null,isRefetching:!1}};export{a as u};

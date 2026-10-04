@@ -1,0 +1,1 @@
+import{G as r,J as S}from"./index-PbeRhxf-.js";import{b as E}from"./services.api-DLCmexMX.js";const t=({service_id:e})=>r({queryKey:[S.SINGLE_SERVICE,e],queryFn:()=>E({queryKey:[S.SINGLE_SERVICE,e]}),enabled:!!e});export{t as u};

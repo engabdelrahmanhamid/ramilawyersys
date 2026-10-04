@@ -1,0 +1,1 @@
+import{a4 as i,c as n,aJ as s,J as u}from"./index-PbeRhxf-.js";const r=({handleSuccess:e})=>{const t=i();return n({mutationFn:s,onSuccess:()=>{t.invalidateQueries({queryKey:[u.ADMIN]}),e&&e()}})};export{r as u};

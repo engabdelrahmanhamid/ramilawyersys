@@ -1,0 +1,1 @@
+import{l as r,Q as s,ab as t}from"./index-PbeRhxf-.js";function o({sx:e,...i}){return r.jsx(s,{sx:{px:5,width:1,flexGrow:1,minHeight:1,display:"flex",alignItems:"center",justifyContent:"center",...e},...i,children:r.jsx(t,{color:"primary",sx:{width:1,maxWidth:360},size:64})})}export{o as L};

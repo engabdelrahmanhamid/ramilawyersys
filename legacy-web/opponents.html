@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon/dawaaLogo.webp" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/rami-hotfix-v1.css?v=12" />
+    <title>قائمة الخصوم</title>
+  </head>
+  <body class="rami-opponents-page">
+    <main class="rami-page-shell">
+      <header class="rami-page-header">
+        <div>
+          <h1>قائمة الخصوم</h1>
+          <p>البحث في أسماء الخصوم المسجلة سابقًا داخل القضايا</p>
+        </div>
+        <a class="rami-back-link" href="/case/list">العودة إلى النظام</a>
+      </header>
+
+      <section class="rami-card" aria-labelledby="opponents-heading">
+        <div class="rami-toolbar">
+          <input
+            id="opponent-search"
+            class="rami-search"
+            type="search"
+            placeholder="ابحث باسم الخصم…"
+            autocomplete="off"
+            aria-label="البحث عن خصم"
+          />
+          <span id="opponents-count" class="rami-count"></span>
+        </div>
+
+        <div class="rami-table-wrap">
+          <table class="rami-table">
+            <thead>
+              <tr>
+                <th>اسم الخصم</th>
+                <th>اسم العميل</th>
+                <th>نوع الخصم</th>
+                <th>الفرع</th>
+                <th>عدد القضايا</th>
+                <th>عدد العملاء</th>
+                <th>الحالة</th>
+              </tr>
+            </thead>
+            <tbody id="opponents-body"></tbody>
+          </table>
+        </div>
+
+        <p id="opponents-status" class="rami-loading" aria-live="polite"></p>
+        <footer class="rami-pagination">
+          <button id="opponents-previous" type="button">السابق</button>
+          <span id="opponents-page-label">صفحة 1 من 1</span>
+          <button id="opponents-next" type="button">التالي</button>
+        </footer>
+      </section>
+    </main>
+    <script src="/assets/rami-hotfix-v1.js?v=13"></script>
+  </body>
+</html>

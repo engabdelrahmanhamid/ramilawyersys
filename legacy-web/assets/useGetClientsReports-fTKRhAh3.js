@@ -1,0 +1,1 @@
+import{G as y,J as E}from"./index-PbeRhxf-.js";import{g as S}from"./home-table-toolbar-CPK4ceZy.js";const f=({page:e,limit:s,month:r,year:t,client_id:o,admin_id:u,date_from:R,date_to:p,country_id:C,city_id:T,district_id:a,branch_id:i,source_id:m,device_id:n})=>y({queryKey:[E.REPORTS_CLIENTS,e,s,t,r,o,u,R,p,C,T,a,i,m,n],queryFn:S});export{f as u};

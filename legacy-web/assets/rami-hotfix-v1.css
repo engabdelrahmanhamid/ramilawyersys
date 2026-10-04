@@ -1,0 +1,348 @@
+:root {
+  --rami-bg: #ffffff;
+  --rami-panel: #ffffff;
+  --rami-panel-2: #f4f6f8;
+  --rami-text: #212b36;
+  --rami-muted: #637381;
+  --rami-border: rgba(145, 158, 171, 0.2);
+  --rami-gold: #fda92d;
+  --rami-green: #00a76f;
+  --rami-detail-bg: rgba(145, 158, 171, 0.08);
+  --rami-backdrop: rgba(22, 28, 36, 0.48);
+  --rami-shadow: rgba(22, 28, 36, 0.2);
+  color-scheme: light;
+}
+
+:root[data-rami-theme='dark'] {
+  --rami-bg: #161c24;
+  --rami-panel: #212b36;
+  --rami-panel-2: #2b3642;
+  --rami-text: #ffffff;
+  --rami-muted: #919eab;
+  --rami-border: rgba(145, 158, 171, 0.2);
+  --rami-detail-bg: rgba(255, 255, 255, 0.025);
+  --rami-backdrop: rgba(4, 9, 15, 0.72);
+  --rami-shadow: rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+.rami-opponents-link {
+  align-items: center;
+  border-radius: 8px;
+  color: var(--rami-muted);
+  display: flex;
+  font-family: Cairo, sans-serif;
+  font-size: 16px;
+  gap: 16px;
+  justify-content: flex-start;
+  margin: 4px 8px;
+  min-height: 48px;
+  padding: 8px 18px;
+  text-decoration: none;
+}
+
+.rami-opponents-link:hover,
+.rami-opponents-link:focus-visible {
+  background: rgba(246, 200, 95, 0.1);
+  color: var(--rami-gold);
+  outline: none;
+}
+
+.rami-opponents-link__icon {
+  font-size: 21px;
+  line-height: 1;
+}
+
+.rami-modal-backdrop {
+  align-items: center;
+  background: var(--rami-backdrop);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+  z-index: 1600;
+}
+
+.rami-modal {
+  background: var(--rami-panel);
+  border: 1px solid var(--rami-border);
+  border-radius: 16px;
+  box-shadow: 0 24px 80px var(--rami-shadow);
+  color: var(--rami-text);
+  direction: rtl;
+  font-family: Cairo, sans-serif;
+  max-height: calc(100vh - 48px);
+  max-width: 920px;
+  overflow: auto;
+  width: 100%;
+}
+
+.rami-modal__header {
+  align-items: center;
+  border-bottom: 1px solid var(--rami-border);
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 24px;
+}
+
+.rami-modal__header h2 {
+  font-size: 22px;
+  margin: 0;
+}
+
+.rami-modal__close {
+  background: transparent;
+  border: 0;
+  color: var(--rami-muted);
+  cursor: pointer;
+  font-size: 28px;
+}
+
+.rami-modal__body {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 24px;
+}
+
+.rami-detail {
+  background: var(--rami-detail-bg);
+  border: 1px solid var(--rami-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.rami-detail--wide {
+  grid-column: 1 / -1;
+}
+
+.rami-detail__label {
+  color: var(--rami-muted);
+  display: block;
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.rami-detail__value {
+  color: var(--rami-text);
+  font-size: 15px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.rami-loading,
+.rami-error {
+  color: var(--rami-muted);
+  grid-column: 1 / -1;
+  padding: 24px;
+  text-align: center;
+}
+
+.rami-error {
+  color: #ff6b6b;
+}
+
+body.rami-opponents-page {
+  background: var(--rami-bg);
+  color: var(--rami-text);
+  direction: rtl;
+  font-family: Cairo, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+main.rami-opponents-host > :not(.rami-opponents-app-view) {
+  display: none !important;
+}
+
+.rami-opponents-app-view {
+  box-sizing: border-box;
+  color: var(--rami-text);
+  direction: rtl;
+  font-family: Cairo, sans-serif;
+  margin-inline: auto;
+  max-width: 1200px;
+  padding-inline: 24px;
+  width: 100%;
+}
+
+.rami-embedded-page-header {
+  margin-bottom: 48px;
+}
+
+.rami-embedded-page-header h1 {
+  color: var(--rami-text);
+  font-size: 32px;
+  line-height: 1.25;
+  margin: 0 0 12px;
+}
+
+.rami-breadcrumbs {
+  align-items: center;
+  color: var(--rami-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.rami-breadcrumbs a {
+  color: var(--rami-text);
+  text-decoration: none;
+}
+
+.rami-breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.rami-page-shell {
+  margin: 0 auto;
+  max-width: 1440px;
+  padding: 32px;
+}
+
+.rami-page-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.rami-page-header h1 {
+  font-size: 34px;
+  margin: 0 0 4px;
+}
+
+.rami-page-header p {
+  color: var(--rami-muted);
+  margin: 0;
+}
+
+.rami-back-link {
+  border: 1px solid var(--rami-border);
+  border-radius: 9px;
+  color: var(--rami-text);
+  padding: 10px 16px;
+  text-decoration: none;
+}
+
+.rami-card {
+  background: var(--rami-panel);
+  border: 1px solid var(--rami-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.rami-toolbar {
+  align-items: center;
+  border-bottom: 1px solid var(--rami-border);
+  display: flex;
+  gap: 14px;
+  padding: 20px;
+}
+
+.rami-search {
+  background: transparent;
+  border: 1px solid var(--rami-border);
+  border-radius: 10px;
+  color: var(--rami-text);
+  font: inherit;
+  max-width: 520px;
+  padding: 13px 16px;
+  width: 100%;
+}
+
+.rami-search:focus {
+  border-color: var(--rami-gold);
+  outline: none;
+}
+
+.rami-search::placeholder {
+  color: var(--rami-muted);
+}
+
+.rami-count {
+  color: var(--rami-muted);
+  margin-inline-start: auto;
+  white-space: nowrap;
+}
+
+.rami-table-wrap {
+  overflow-x: auto;
+}
+
+.rami-table {
+  border-collapse: collapse;
+  min-width: 1180px;
+  width: 100%;
+}
+
+.rami-table th,
+.rami-table td {
+  border-bottom: 1px dashed var(--rami-border);
+  padding: 18px 16px;
+  text-align: right;
+}
+
+.rami-table th {
+  background: var(--rami-panel-2);
+  color: var(--rami-muted);
+  font-weight: 600;
+}
+
+.rami-table a {
+  color: var(--rami-gold);
+}
+
+.rami-chip {
+  background: rgba(46, 204, 113, 0.16);
+  border-radius: 7px;
+  color: var(--rami-green);
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 5px 9px;
+}
+
+.rami-pagination {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 18px 20px;
+}
+
+.rami-pagination button {
+  background: transparent;
+  border: 1px solid var(--rami-border);
+  border-radius: 8px;
+  color: var(--rami-text);
+  cursor: pointer;
+  font: inherit;
+  padding: 8px 14px;
+}
+
+.rami-pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+@media (max-width: 720px) {
+  .rami-modal__body {
+    grid-template-columns: 1fr;
+  }
+
+  .rami-page-shell {
+    padding: 18px;
+  }
+
+  .rami-page-header,
+  .rami-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .rami-count {
+    margin-inline-start: 0;
+  }
+}

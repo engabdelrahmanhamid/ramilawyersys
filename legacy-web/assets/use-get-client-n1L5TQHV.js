@@ -1,0 +1,1 @@
+import{G as p,J as E}from"./index-PbeRhxf-.js";import{a as N}from"./client.api-y7A0iAl-.js";const q=({page:e,search_text:s,limit:r,type_id:t,status_id:o,country_id:u,city_id:a,district_id:C,branch_id:i,admin_id:m,date_from:n,date_to:y,types:T})=>p({queryKey:[E.CLIENT,e,s,r,t,o,u,a,C,i,m,n,y,T],queryFn:N});export{q as u};

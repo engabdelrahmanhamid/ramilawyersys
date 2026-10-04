@@ -1,0 +1,1 @@
+import{G as C,J as r}from"./index-PbeRhxf-.js";import{g as s}from"./use-get-type-lJH4kSz0.js";const o=({contact_id:e})=>C({queryKey:[r.SINGLE_CONTACT,e],queryFn:()=>s({queryKey:[r.SINGLE_CONTACT,e]}),enabled:!!e});export{o as u};

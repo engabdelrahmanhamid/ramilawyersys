@@ -1,0 +1,1 @@
+import{a4 as i,c as n,J as r}from"./index-PbeRhxf-.js";import{d as s}from"./client.api-y7A0iAl-.js";const a=({handleSuccess:e})=>{const t=i();return n({mutationFn:s,onSuccess:()=>{t.invalidateQueries({queryKey:[r.CLIENT]}),e&&e()}})};export{a as u};
