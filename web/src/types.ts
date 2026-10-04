@@ -58,3 +58,26 @@ export type CaseListItem = {
   type?: Named;
   status?: Named;
 };
+
+export type Appointment = {
+  id: number;
+  gregorian_date?: string | null;
+  date?: string | null;
+  time?: string | null;
+  destination?: string | null;
+  note?: string | null;
+  status?: Named | number;
+  admin?: Named;
+  client?: Client;
+};
+
+export type Contact = {
+  id: number;
+  date?: string | null;
+  description?: string | null;
+  method?: number | null; // channel: phone / whatsapp / visit ...
+  contact_reason?: Named;
+  type?: Named;
+  admin?: Named;
+  client?: Client;
+};

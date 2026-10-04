@@ -7,7 +7,9 @@ import { IS_DEMO, OLD_APP } from '../config';
 import { CommandPalette } from './CommandPalette';
 
 const navItems = [
-  { to: '/', label: 'يومي' },
+  { to: '/', label: 'مساحتي' },
+  { to: '/today', label: 'يومي' },
+  { to: '/activity', label: 'مركز النشاط' },
   { to: '/clients', label: 'العملاء' },
 ];
 

@@ -5,9 +5,11 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider, useAuth } from './auth';
 import { Layout } from './components/Layout';
+import { ActivityPage } from './pages/Activity';
 import { ClientsPage } from './pages/Clients';
 import { LoginPage } from './pages/Login';
 import { TodayPage } from './pages/Today';
+import { WorkspacePage } from './pages/Workspace';
 import { AppTheme } from './theme';
 
 const queryClient = new QueryClient({
@@ -27,7 +29,9 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<TodayPage />} />
+        <Route path="/" element={<WorkspacePage />} />
+        <Route path="/today" element={<TodayPage />} />
+        <Route path="/activity" element={<ActivityPage />} />
         <Route path="/clients" element={<ClientsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

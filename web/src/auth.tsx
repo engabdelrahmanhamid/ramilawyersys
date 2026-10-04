@@ -24,18 +24,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const result = await post<Admin>('login', { email, password });
+    const result = await post<Admin>('auth/login', { email, password });
     if (!result.token) throw new Error('لم يُرجع الخادم رمز الدخول.');
     tokenStore.set(result.token);
     setAdmin(result);
   }, []);
 
   const logout = useCallback(async () => {
-    try {
-      await post('auth/logout', {});
-    } catch {
-      // The token is dropped locally either way.
-    }
+    // The old app has no logout endpoint — it just clears the token client-side.
     tokenStore.clear();
     setAdmin(null);
   }, []);
