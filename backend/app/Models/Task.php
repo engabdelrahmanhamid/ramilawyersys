@@ -136,5 +136,29 @@ class Task extends Model
         return $tasks;
     }
 
+    /**
+     * The moment the task becomes late. A date without a time means the end of that day.
+     *
+     * @return \Carbon\Carbon|null
+     */
+    public function dueAt()
+    {
+        if (!$this->end_date)
+            return null;
+        try {
+            $due = \Carbon\Carbon::parse($this->end_date);
+        } catch (\Exception $e) {
+            return null;
+        }
+        return strlen(trim($this->end_date)) <= 10 ? $due->endOfDay() : $due;
+    }
 
+    /**
+     * @return bool
+     */
+    public function isOverdue()
+    {
+        $due = $this->dueAt();
+        return (int) $this->status === 1 && $due && $due->isPast();
+    }
 }

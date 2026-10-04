@@ -63,23 +63,15 @@ class HomeController extends Controller
         $request['limit'] = 6;
         $cases_count = $this->caseRepo->getReport($request)->count();
         $cases_data = $this->caseRepo->getReport($request);
-        $deposit_array[] = $this->caseRepo->getSumArray('deposit', $cases_data);
-        $amount_array[] = $this->caseRepo->getSumArray('amount', $cases_data);
-        $remaining_array[] = $this->caseRepo->getSumArray('amount', $cases_data) - $this->caseRepo->getSumArray('deposit', $cases_data);
-        $total_deposit = array_sum($deposit_array);
-        $total_amount = array_sum($amount_array);
-        $total_remaining = array_sum($remaining_array);
+        // Amounts include tax (total_amount) because deposits are paid against tax-inclusive receipts.
+        $total_deposit = $this->caseRepo->getSumArray('deposit', clone $cases_data);
+        $total_amount = $this->caseRepo->getSumArray('total_amount', clone $cases_data);
+        $total_remaining = $total_amount - $total_deposit;
 
         $services_count = $this->serviceRepo->getReport($request)->count();
-        $services_data = $this->serviceRepo->getReport($request);
-        $deposit_array[] = $this->serviceRepo->getSumArray('deposit', $services_data);
-        $amount_array[] = $this->serviceRepo->getSumArray('amount', $services_data);
-        $remaining_array[] = $this->serviceRepo->getSumArray('amount', $services_data) - $this->serviceRepo->getSumArray('deposit', $services_data);
-        $total_services_deposit = array_sum($deposit_array);
-        $total_service_amount = array_sum($amount_array);
-        $total_services_remaining = array_sum($remaining_array);
-        $totalUnPaidCaseReceipts = $this->receiptRepo->getAllUnPaidReceipts($request)->sum('total_amount');
-        $totalUnPaidServiceReceipts = $this->serviceReceiptRepo->getAllUnPaidReceipts($request)->sum('total_amount');
+        // Outstanding = what is still unpaid on open receipts (partially paid receipts count only their remainder).
+        $totalUnPaidCaseReceipts = $this->receiptRepo->getAllUnPaidReceipts($request)->sum('unpaid_amount');
+        $totalUnPaidServiceReceipts = $this->serviceReceiptRepo->getAllUnPaidReceipts($request)->sum('unpaid_amount');
         $cases = $this->caseRepo->get($request);
         $sessions = $this->sessionRepo->get($request)->count();
         $clients_count = $this->clientRepo->getReport($request)->count();

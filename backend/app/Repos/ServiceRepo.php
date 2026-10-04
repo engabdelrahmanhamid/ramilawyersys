@@ -148,7 +148,7 @@ class ServiceRepo
      */
     public function changePaymentStatus($service)
     {
-        $service->payment_status = $service->deposit == $service->total_amount ? 1 : 0;
+        $service->payment_status = round($service->deposit, 2) >= round($service->total_amount, 2) ? 1 : 0;
         $service->save();
     }
 

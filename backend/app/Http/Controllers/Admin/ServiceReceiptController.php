@@ -49,7 +49,7 @@ class ServiceReceiptController extends Controller
         $service = $service_receipt->service;
         if ($service_receipt->payment_status == 1)
             return $this->apiResponseMessage(0, __('responseMessage.paid_receipt'));
-        if ($request->pay_amount > $service_receipt->total_amount)
+        if ($request->pay_amount <= 0 || $request->pay_amount > $service_receipt->unpaid_amount)
             return $this->apiResponseMessage(0, __('responseMessage.invalid_amount'));
         $this->serviceReceiptRepo->cal_paid_and_unpaid_amount($service_receipt,$request);
         $this->serviceReceiptRepo->changeReceiptPaymentStatus($service_receipt,$request);

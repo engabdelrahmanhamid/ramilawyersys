@@ -48,7 +48,7 @@ class CaseReceiptController extends Controller
         $case = $receipt->userCase;
         if ($receipt->payment_status == 1)
             return $this->apiResponseMessage(0, __('responseMessage.paid_receipt'));
-        if ($request->pay_amount > $receipt->total_amount)
+        if ($request->pay_amount <= 0 || $request->pay_amount > $receipt->unpaid_amount)
             return $this->apiResponseMessage(0, __('responseMessage.invalid_amount'));
         $this->receiptRepo->cal_paid_and_unpaid_amount($receipt,$request);
         $this->receiptRepo->changeReceiptPaymentStatus($receipt,$request);

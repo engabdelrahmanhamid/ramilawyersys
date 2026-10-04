@@ -159,7 +159,7 @@ class CaseRepo
      */
     public function changePaymentStatus($case)
     {
-        $case->payment_status = $case->deposit == $case->total_amount ? 1 : 0;
+        $case->payment_status = round($case->deposit, 2) >= round($case->total_amount, 2) ? 1 : 0;
         $case->save();
     }
 

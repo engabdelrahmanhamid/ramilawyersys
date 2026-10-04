@@ -104,8 +104,8 @@ class TaskRepo
     public function finishTask($task,$payload)
     {
         $current_time = now();
-        $finish_time = \Carbon\Carbon::parse($task->end_date);
-        if ($current_time < $finish_time) {
+        $finish_time = $task->dueAt();
+        if (!$finish_time || $current_time <= $finish_time) {
             $task->status = 2;
         } else {
             $task->status = 3;

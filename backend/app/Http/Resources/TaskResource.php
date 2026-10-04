@@ -27,6 +27,7 @@ class TaskResource extends JsonResource
             'time_remaining'=>DateHelper::getInstance()->convertToTime($this->end_date),
             'description' =>  $this->description ,
             'status' =>  (int)$this->status,
+            'is_overdue' => $this->isOverdue(),
             'comment' =>  $this->comment,
             'task_type'=>new TypeResource($this->task_type),
             'created_by'=>new AdminResource($this->created_by),

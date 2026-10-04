@@ -54,19 +54,14 @@ class ReportController extends Controller
         $title = $request->month ? 'تقرير شهري' : 'تقرير سنوي';
         $type = $request->month ? 1 : 2;
         foreach ($array as $key => $row) {
-            if ($type == 1) {
-                $request['date_from'] = $request->year . '-' . $request->month . '-' . $row['start'];
-                $request['date_to'] = $request->year . '-' . $request->month . '-' . $row['end'];
-            } else {
-                $request['month'] = '0' . $key;
-            }
+            $this->setPeriod($request, $type, $key, $row);
             $x[] = $row['title'];
             $data = $caseRepo->getReport($request);
             $values[] = $data->count();
             $count_array[] = $data->count();
             $deposit_array[] = $caseRepo->getSumArray('deposit', $data);
-            $amount_array[] = $caseRepo->getSumArray('amount', $data);
-            $remaining_array[] = $caseRepo->getSumArray('amount', $data) - $caseRepo->getSumArray('deposit', $data);
+            $amount_array[] = $caseRepo->getSumArray('total_amount', $data);
+            $remaining_array[] = $caseRepo->getSumArray('total_amount', $data) - $caseRepo->getSumArray('deposit', $data);
         }
         $sum = [array_sum($values), $count_array];
         $total_deposit = [array_sum($deposit_array), $deposit_array];
@@ -101,12 +96,7 @@ class ReportController extends Controller
         $title = $request->month ? 'تقرير شهري' : 'تقرير سنوي';
         $type = $request->month ? 1 : 2;
             foreach ($array as $key => $row) {
-                if ($type == 1) {
-                    $request['date_from'] = $request->year . '-' . $request->month . '-' . $row['start'];
-                    $request['date_to'] = $request->year . '-' . $request->month . '-' . $row['end'];
-                } else {
-                    $request['month'] = '0' . $key;
-                }
+                $this->setPeriod($request, $type, $key, $row);
                 $request['type_id']=null;
                 $data = $clientRepo->getReport($request);
                 $x[] = $row['title'];
@@ -150,19 +140,14 @@ class ReportController extends Controller
         $title = $request->month ? 'تقرير شهري' : 'تقرير سنوي';
         $type = $request->month ? 1 : 2;
         foreach ($array as $key => $row) {
-            if ($type == 1) {
-                $request['date_from'] = $request->year . '-' . $request->month . '-' . $row['start'];
-                $request['date_to'] = $request->year . '-' . $request->month . '-' . $row['end'];
-            } else {
-                $request['month'] = '0' . $key;
-            }
+            $this->setPeriod($request, $type, $key, $row);
             $x[] = $row['title'];
             $data = $serviceRepo->getReport($request);
             $values[] = $data->count();
             $count_array[] = $data->count();
             $deposit_array[] = $serviceRepo->getSumArray('deposit', $data);
-            $amount_array[] = $serviceRepo->getSumArray('amount', $data);
-            $remaining_array[] = $serviceRepo->getSumArray('amount', $data) - $serviceRepo->getSumArray('deposit', $data);
+            $amount_array[] = $serviceRepo->getSumArray('total_amount', $data);
+            $remaining_array[] = $serviceRepo->getSumArray('total_amount', $data) - $serviceRepo->getSumArray('deposit', $data);
 
         }
 
@@ -201,12 +186,7 @@ class ReportController extends Controller
         $title = $request->month ? 'تقرير شهري' : 'تقرير سنوي';
         $type = $request->month ? 1 : 2;
         foreach ($array as $key => $row) {
-            if ($type == 1) {
-                $request['date_from'] = $request->year . '-' . $request->month . '-' . $row['start'];
-                $request['date_to'] = $request->year . '-' . $request->month . '-' . $row['end'];
-            } else {
-                $request['month'] = '0' . $key;
-            }
+            $this->setPeriod($request, $type, $key, $row);
             $x[] = $row['title'];
             $data = $taskRepo->getReport($request);
             $values[] = $data->count();
@@ -249,12 +229,7 @@ class ReportController extends Controller
         $title = $request->month ? 'تقرير شهري' : 'تقرير سنوي';
         $type = $request->month ? 1 : 2;
         foreach ($array as $key => $row) {
-            if ($type == 1) {
-                $request['date_from'] = $request->year . '-' . $request->month . '-' . $row['start'];
-                $request['date_to'] = $request->year . '-' . $request->month . '-' . $row['end'];
-            } else {
-                $request['month'] = '0' . $key;
-            }
+            $this->setPeriod($request, $type, $key, $row);
             $x[] = $row['title'];
             $data = $sessionRepo->getReport($request);
             $values[] = $data->count();
@@ -297,12 +272,7 @@ class ReportController extends Controller
         $title = $request->month ? 'تقرير شهري' : 'تقرير سنوي';
         $type = $request->month ? 1 : 2;
         foreach ($array as $key => $row) {
-            if ($type == 1) {
-                $request['date_from'] = $request->year . '-' . $request->month . '-' . $row['start'];
-                $request['date_to'] = $request->year . '-' . $request->month . '-' . $row['end'];
-            } else {
-                $request['month'] = '0' . $key;
-            }
+            $this->setPeriod($request, $type, $key, $row);
             $x[] = $row['title'];
             $data = $receiptRepo->getReport($request);
             $values[] = $data->count();
@@ -352,12 +322,7 @@ class ReportController extends Controller
         $title = $request->month ? 'تقرير شهري' : 'تقرير سنوي';
         $type = $request->month ? 1 : 2;
         foreach ($array as $key => $row) {
-            if ($type == 1) {
-                $request['date_from'] = $request->year . '-' . $request->month . '-' . $row['start'];
-                $request['date_to'] = $request->year . '-' . $request->month . '-' . $row['end'];
-            } else {
-                $request['month'] = '0' . $key;
-            }
+            $this->setPeriod($request, $type, $key, $row);
             $x[] = $row['title'];
             $data = $serviceReceiptRepo->getReport($request);
             $values[] = $data->count();
@@ -384,6 +349,35 @@ class ReportController extends Controller
                 'case_receipts' => new ServiceReceiptCollection($service_receipts),
             ];
         return $this->apiResponseData($data);
+    }
+
+    /**
+     * Limit the report query to one bucket of the selected year.
+     * Before this, the chosen year was ignored and every year's data was mixed together.
+     * With no year chosen, the yearly report keeps its old "all years" behaviour.
+     *
+     * @param Request $request
+     * @param int $type 1 = monthly report (buckets of days), 2 = yearly report (buckets of months)
+     * @param int $key
+     * @param array $row
+     * @return void
+     */
+    private function setPeriod(Request $request, $type, $key, $row)
+    {
+        $year = (int) ($request->input('year') ?: date('Y'));
+        if ($type == 1) {
+            $monthStart = \Carbon\Carbon::create($year, (int) $request->month, 1);
+            $lastDay = $monthStart->daysInMonth;
+            $request['date_from'] = $monthStart->copy()->day(min($row['start'], $lastDay))->toDateString();
+            $request['date_to'] = $monthStart->copy()->day(min($row['end'], $lastDay))->toDateString();
+        } elseif (!$request->input('year')) {
+            $request['month'] = str_pad($key, 2, '0', STR_PAD_LEFT);
+        } else {
+            $monthStart = \Carbon\Carbon::create($year, (int) $key, 1);
+            $request['month'] = null;
+            $request['date_from'] = $monthStart->toDateString();
+            $request['date_to'] = $monthStart->copy()->endOfMonth()->toDateString();
+        }
     }
 
 }

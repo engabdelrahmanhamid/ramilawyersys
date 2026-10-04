@@ -112,11 +112,14 @@ class ReceiptRepo{
         $receipt->tax_amount = $case->tax_amount;
         $receipt->total_amount = $case->total_amount;
         $receipt->paid_amount = $receipt->total_amount;
-        $receipt->unpaid_amount =$case->total_amount ;
+        $receipt->unpaid_amount = 0;
         $receipt->payment_status = 1;
         $receipt->receipt_number = $settingRepo->getFirstSetting()->current_case_number + $settingRepo->getFirstSetting()->increase_amount_case_receipt;
         $receipt->save();
         $settingRepo->current_case_number();
+        $case->deposit = $case->total_amount;
+        $case->payment_status = 1;
+        $case->save();
         return $receipt;
     }
 
@@ -157,7 +160,7 @@ class ReceiptRepo{
 
     public function changeReceiptPaymentStatus($receipt,$payload)
     {
-        $receipt->payment_status = $receipt->paid_amount == $receipt->total_amount ? 1 : 0;
+        $receipt->payment_status = round($receipt->paid_amount, 2) >= round($receipt->total_amount, 2) ? 1 : 0;
         $receipt->payment_method_id=$payload->payment_method_id;
         $receipt->paid_to=$payload->paid_to;
         $receipt->paid_at=now();

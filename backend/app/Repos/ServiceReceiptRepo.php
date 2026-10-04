@@ -103,6 +103,7 @@ class ServiceReceiptRepo{
     {
         $settingRepo=new SettingRepo();
         $service->payment_status = 1;
+        $service->deposit = $service->total_amount;
         $service->save();
         $service_receipt = new ServiceReceipt();
         $service_receipt->service_id = $service->id;
@@ -159,7 +160,7 @@ class ServiceReceiptRepo{
      */
     public function changeReceiptPaymentStatus($service_receipt,$payload)
     {
-        $service_receipt->payment_status = $service_receipt->paid_amount == $service_receipt->total_amount ? 1 : 0;
+        $service_receipt->payment_status = round($service_receipt->paid_amount, 2) >= round($service_receipt->total_amount, 2) ? 1 : 0;
         $service_receipt->payment_method_id=$payload->payment_method_id;
         $service_receipt->paid_to=$payload->paid_to;
         $service_receipt->paid_at=now();
