@@ -364,20 +364,28 @@ class ReportController extends Controller
      */
     private function setPeriod(Request $request, $type, $key, $row)
     {
+        // Remember the date range the user picked, so each bucket stays inside it.
+        if (!$request->attributes->has('report_user_range'))
+            $request->attributes->set('report_user_range', [$request->input('date_from'), $request->input('date_to')]);
+        list($userFrom, $userTo) = $request->attributes->get('report_user_range');
+
         $year = (int) ($request->input('year') ?: date('Y'));
         if ($type == 1) {
             $monthStart = \Carbon\Carbon::create($year, (int) $request->month, 1);
             $lastDay = $monthStart->daysInMonth;
-            $request['date_from'] = $monthStart->copy()->day(min($row['start'], $lastDay))->toDateString();
-            $request['date_to'] = $monthStart->copy()->day(min($row['end'], $lastDay))->toDateString();
+            $from = $monthStart->copy()->day(min($row['start'], $lastDay))->toDateString();
+            $to = $monthStart->copy()->day(min($row['end'], $lastDay))->toDateString();
         } elseif (!$request->input('year')) {
             $request['month'] = str_pad($key, 2, '0', STR_PAD_LEFT);
+            return;
         } else {
             $monthStart = \Carbon\Carbon::create($year, (int) $key, 1);
             $request['month'] = null;
-            $request['date_from'] = $monthStart->toDateString();
-            $request['date_to'] = $monthStart->copy()->endOfMonth()->toDateString();
+            $from = $monthStart->toDateString();
+            $to = $monthStart->copy()->endOfMonth()->toDateString();
         }
+        $request['date_from'] = ($userFrom && $userFrom > $from) ? $userFrom : $from;
+        $request['date_to'] = ($userTo && $userTo < $to) ? $userTo : $to;
     }
 
 }
