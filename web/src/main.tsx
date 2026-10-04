@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider, useAuth } from './auth';
 import { Layout } from './components/Layout';
+import { ClientsPage } from './pages/Clients';
 import { LoginPage } from './pages/Login';
 import { TodayPage } from './pages/Today';
 import { AppTheme } from './theme';
@@ -27,6 +28,7 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<TodayPage />} />
+        <Route path="/clients" element={<ClientsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

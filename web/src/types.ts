@@ -38,3 +38,23 @@ export type Receipt = {
   case?: CaseRef;
   service?: { id: number; name: string; client?: Client } | null;
 };
+
+// List rows. The back-end returns the same { data, pagination } envelope as the other lists.
+export type ClientListItem = {
+  id: number;
+  name: string;
+  phone?: string | null;
+  email?: string | null;
+  type?: Named;
+  status?: Named;
+  branch?: Named;
+};
+
+export type CaseListItem = {
+  id: number;
+  name: string;
+  number?: string | null;
+  client?: Client;
+  type?: Named;
+  status?: Named;
+};
