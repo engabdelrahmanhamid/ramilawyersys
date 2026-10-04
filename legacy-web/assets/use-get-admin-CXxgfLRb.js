@@ -1,0 +1,1 @@
+import{G as n,J as o,cm as y}from"./index-PbeRhxf-.js";const N=({page:e,search_text:s,limit:r,type_id:u,branch_id:m,date_from:t,date_to:A,all:a})=>n({queryKey:[o.ADMIN,e,s,r,u,m,t,A,a],queryFn:y});export{N as u};

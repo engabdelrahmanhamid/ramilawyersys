@@ -1,0 +1,200 @@
+# Deploys to Hostinger over FTPS.
+#  - Every push to main deploys the parts that changed to the DEMO sites.
+#  - Production is deployed only by hand: Actions > Deploy > Run workflow > target = production.
+# Server folders and credentials live in GitHub (Settings > Environments: "demo" and "production").
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Where to deploy
+        type: choice
+        options: [demo, production]
+        default: demo
+      part:
+        description: What to deploy
+        type: choice
+        options: [all, backend, legacy-web, web]
+        default: all
+
+concurrency:
+  group: deploy-${{ github.event.inputs.target || 'demo' }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      target: ${{ steps.t.outputs.target }}
+      backend: ${{ steps.t.outputs.backend }}
+      legacy: ${{ steps.t.outputs.legacy }}
+      web: ${{ steps.t.outputs.web }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: t
+        env:
+          EVENT: ${{ github.event_name }}
+          TARGET: ${{ github.event.inputs.target }}
+          PART: ${{ github.event.inputs.part }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if [ "$EVENT" = workflow_dispatch ]; then
+            echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+            for p in backend legacy web; do
+              want=false
+              case "$PART" in all) want=true;; backend) [ $p = backend ] && want=true;; legacy-web) [ $p = legacy ] && want=true;; web) [ $p = web ] && want=true;; esac
+              echo "$p=$want" >> "$GITHUB_OUTPUT"
+            done
+            exit 0
+          fi
+          echo "target=demo" >> "$GITHUB_OUTPUT"
+          if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            changed=$(git ls-files)   # first push: everything is new
+          else
+            changed=$(git diff --name-only "$BEFORE" HEAD)
+          fi
+          has() { echo "$changed" | grep -qE "$1" && echo true || echo false; }
+          echo "backend=$(has '^backend/')" >> "$GITHUB_OUTPUT"
+          echo "legacy=$(has '^legacy-web/')" >> "$GITHUB_OUTPUT"
+          echo "web=$(has '^web/')" >> "$GITHUB_OUTPUT"
+
+  backend:
+    needs: plan
+    if: needs.plan.outputs.backend == 'true'
+    runs-on: ubuntu-latest
+    environment: ${{ needs.plan.outputs.target }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check settings
+        id: ok
+        env:
+          DIR: ${{ vars.BACKEND_DIR }}
+          HOST: ${{ secrets.FTP_SERVER }}
+        run: |
+          if [ -z "$DIR" ] || [ -z "$HOST" ]; then
+            echo "::warning::BACKEND_DIR or FTP_SERVER is not set for this environment; skipping."
+            echo "go=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: PHP syntax check
+        if: steps.ok.outputs.go == 'true'
+        run: find backend -name '*.php' -not -path '*/vendor/*' -print0 | xargs -0 -n1 -P4 php -l > /dev/null
+      - name: Upload
+        if: steps.ok.outputs.go == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          local-dir: ./backend/
+          server-dir: ${{ vars.BACKEND_DIR }}
+          # Server-only things are never uploaded or deleted: .env, vendor, keys, uploads, caches.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .env
+            .env.*
+            vendor/**
+            storage/**
+            images/**
+            files/**
+            bootstrap/cache/**
+            node_modules/**
+
+  legacy-web:
+    needs: plan
+    if: needs.plan.outputs.legacy == 'true'
+    runs-on: ubuntu-latest
+    environment: ${{ needs.plan.outputs.target }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check settings
+        id: ok
+        env:
+          DIR: ${{ vars.LEGACY_WEB_DIR }}
+          HOST: ${{ secrets.FTP_SERVER }}
+        run: |
+          if [ -z "$DIR" ] || [ -z "$HOST" ]; then
+            echo "::warning::LEGACY_WEB_DIR or FTP_SERVER is not set for this environment; skipping."
+            echo "go=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Point the demo build at the demo API
+        if: steps.ok.outputs.go == 'true' && needs.plan.outputs.target == 'demo'
+        run: |
+          cd legacy-web
+          for f in assets/index-PbeRhxf-.js assets/rami-hotfix-v1.js; do
+            grep -q 'https://back.ramilawyersys.com/apiAdmin' "$f" || { echo "::error::API address not found in $f"; exit 1; }
+            sed -i 's#https://back\.ramilawyersys\.com/apiAdmin#https://demo-back.ramilawyersys.com/apiAdmin#g' "$f"
+          done
+          sed -i 's#<title>#<title>[DEMO] #' index.html
+          sed -i 's#</head>#<style>body::before{content:"نسخة تجريبية — DEMO";position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:99999;background:\#d32f2f;color:\#fff;font:700 12px Cairo,sans-serif;padding:2px 14px;border-radius:0 0 8px 8px;pointer-events:none}</style></head>#' index.html
+          printf '\n# Demo site: keep it out of search engines\n<IfModule mod_headers.c>\n    Header always set X-Robots-Tag "noindex, nofollow"\n</IfModule>\n' >> .htaccess
+          if grep -q 'https://back\.ramilawyersys\.com' assets/index-PbeRhxf-.js assets/rami-hotfix-v1.js; then echo "::error::live API address still present"; exit 1; fi
+      - name: Upload
+        if: steps.ok.outputs.go == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          local-dir: ./legacy-web/
+          server-dir: ${{ vars.LEGACY_WEB_DIR }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            downloads/**
+
+  web:
+    needs: plan
+    if: needs.plan.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    environment: ${{ needs.plan.outputs.target }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check settings
+        id: ok
+        env:
+          DIR: ${{ vars.APP_DIR }}
+          HOST: ${{ secrets.FTP_SERVER }}
+        run: |
+          if [ -z "$DIR" ] || [ -z "$HOST" ]; then
+            echo "::warning::APP_DIR or FTP_SERVER is not set for this environment; skipping."
+            echo "go=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Build
+        working-directory: web
+        env:
+          VITE_API_BASE: ${{ needs.plan.outputs.target == 'production' && 'https://back.ramilawyersys.com/apiAdmin' || 'https://demo-back.ramilawyersys.com/apiAdmin' }}
+          VITE_OLD_APP: ${{ needs.plan.outputs.target == 'production' && 'https://web.ramilawyersys.com' || 'https://demo.ramilawyersys.com' }}
+          VITE_DEMO: ${{ needs.plan.outputs.target == 'production' && 'false' || 'true' }}
+        run: |
+          npm ci
+          npm run typecheck
+          npm run build
+      - name: Upload
+        if: steps.ok.outputs.go == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          local-dir: ./web/dist/
+          server-dir: ${{ vars.APP_DIR }}

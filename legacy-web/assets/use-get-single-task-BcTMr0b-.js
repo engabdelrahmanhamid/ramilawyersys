@@ -1,0 +1,1 @@
+import{G as S,J as r}from"./index-PbeRhxf-.js";import{a as s}from"./tasks-D7xi2Z3S.js";const a=({task_id:e})=>S({queryKey:[r.SINGLE_TASK,e],queryFn:()=>s({queryKey:[r.SINGLE_TASK,e]}),enabled:!!e});export{a as u};

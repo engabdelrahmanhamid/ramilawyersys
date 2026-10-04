@@ -1,6 +1,14 @@
-# واجهة مكتب رامي للمحاماة (الجديدة)
+# نظام مكتب رامي للمحاماة
 
-واجهة جديدة تُبنى شاشة بعد شاشة على نفس الـ API الحالي (`/apiAdmin`)، وتعمل بجانب الواجهة القديمة حتى تستبدلها.
+| المجلد | المحتوى | يُنشر إلى (demo / الأساسي) |
+|---|---|---|
+| `backend/` | الـ API (Laravel 8) مع إصلاحات المرحلة 1 و 2 | `demo-back` / `back` |
+| `legacy-web/` | الواجهة الحالية (مبنية، بلا كود مصدري) مع ترقيعاتها | `demo` / `web` |
+| `web/` | الواجهة الجديدة، تُبنى شاشة بعد شاشة على نفس الـ API | `app-demo` / (لاحقًا) |
+
+لا يحتوي المستودع على: `.env`، `vendor/`، `storage/` (ومنه مفاتيح Passport)، `images/` (ملفات العملاء). هذه تبقى على السيرفر فقط ولا يلمسها النشر.
+
+## الواجهة الجديدة
 
 ## الشاشات
 - [x] تسجيل الدخول (نفس حسابات النظام)
@@ -18,14 +26,22 @@ npm install
 npm run dev
 ```
 
-## البناء والنشر على Hostinger
-```bash
-cd web && npm run build
-```
-ارفع محتوى `web/dist/` (يشمل `.htaccess`) إلى جذر النطاق الفرعي.
+## النشر (آلي)
+- **demo**: كل دفع إلى `main` ينشر تلقائيًا الأجزاء التي تغيّرت فقط.
+- **الأساسي**: يدويًا فقط من GitHub: Actions ← Deploy ← Run workflow ← `target = production`.
 
-| المتغير | demo | الأساسي |
+الإعدادات في GitHub ← Settings ← Environments، بيئتان `demo` و `production`، في كل منهما:
+
+| النوع | الاسم | مثال |
 |---|---|---|
-| `VITE_API_BASE` | `https://demo-back.ramilawyersys.com/apiAdmin` | `https://back.ramilawyersys.com/apiAdmin` |
-| `VITE_OLD_APP` | `https://demo.ramilawyersys.com` | `https://web.ramilawyersys.com` |
-| `VITE_DEMO` | `true` | `false` |
+| Secret | `FTP_SERVER` | عنوان FTP من hPanel |
+| Secret | `FTP_USERNAME` | |
+| Secret | `FTP_PASSWORD` | |
+| Variable | `BACKEND_DIR` | `domains/demo-back.ramilawyersys.com/public_html/` |
+| Variable | `LEGACY_WEB_DIR` | `domains/demo.ramilawyersys.com/public_html/` |
+| Variable | `APP_DIR` | `domains/app-demo.ramilawyersys.com/public_html/` |
+| Variable (اختياري) | `FTP_PROTOCOL` | `ftps` (الافتراضي) أو `ftp` |
+
+أي مجلد لم يُضبط يُتخطّى نشره بتحذير بدل الفشل. المسارات تنتهي بـ `/` وتكون نسبةً إلى جذر حساب FTP.
+
+نسخة demo من الواجهة القديمة تُولَّد أثناء النشر: يُستبدل عنوان الـ API بـ `demo-back` وتُضاف شارة DEMO.

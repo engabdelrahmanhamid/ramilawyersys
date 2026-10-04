@@ -1,0 +1,36 @@
+<?php
+
+return [
+    'name_ar_unique'=>'name in arabic is already taken',
+    'name_en_unique'=>'name in english is already taken',
+    'name_required'=>'name is required',
+    'email_required'=>'email is required',
+    'email_unique'=>'email is already taken',
+    'phone_unique'=>'phone is already taken',
+    'phone_required'=>'phone is required',
+    'passwordNotCorrect'=>'password not correct',
+    'phoneNotFount'=>'phone not found',
+    'codeNotCorrect'=>'code not correct',
+    'codeSend'=>'code send to your email',
+    'quantity_required'=>'quantity is required',
+    'quantityNotAvailable'=>'quantity not available',
+    'productCannotAddedToCart'=>'this product cannot be added in cart',
+    'deletedSuccess'=>'deleted successfully',
+    'address_required'=>'address is required',
+    'empty_cart'=>'your cart is empty',
+    'order_success'=>'Your order has been submitted successfully. Our team will contact you',
+    'emailNotFount'=>'email not fount',
+    'logout'=>'logout successfully',
+    'date_required'=>'please enter the date',
+    'cannot_delete_client'=>'you can not delete this client',
+    'phone_invalid'=>'phone must contain digits only (8 to 15)',
+    'email_invalid'=>'email format is not valid',
+    'id_number_invalid'=>'ID number must contain digits only',
+    'phone_taken_by'=>'this phone already belongs to client :name (#:id)',
+    'id_number_taken_by'=>'this ID number already belongs to client :name (#:id)',
+    'country_required'=>'please choose the country',
+    'device_required'=>'please choose the contact channel',
+    'source_required'=>'please choose the source',
+    'client_type_required'=>'please choose the client type'
+];
+

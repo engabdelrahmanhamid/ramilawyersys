@@ -1,0 +1,38 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # The site root is the Laravel project root, so block everything that is not meant to be public:
+    # .env, keys, logs, source code, scripts, backups and dumps.
+    RewriteRule ^\.(?!well-known/) - [F,L]
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|scripts|storage|tests|vendor|back|dd|ss|tt)(/|$) - [F,L]
+    RewriteRule ^(artisan|server\.php|composer\.(json|lock)|package\.json|phpunit\.xml|webpack\.mix\.js|README\.md|default\.php\.hostinger-backup)$ - [F,L]
+    RewriteRule \.(env|key|log|sql|zip|tar|gz|bak|backup|sh)$ - [F,L,NC]
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET,PUT,POST,DELETE"
+Header set Access-Control-Allow-Headers "Content-Type, Authorization,lang,api_sec"
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Strict-Transport-Security "max-age=31536000"
+    Header always unset X-Powered-By
+</IfModule>

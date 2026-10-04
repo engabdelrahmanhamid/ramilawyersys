@@ -1,0 +1,1 @@
+import{G as r,J as S}from"./index-PbeRhxf-.js";import{b as u}from"./sessions-1yxzUWv_.js";const y=({session_id:e})=>r({queryKey:[S.SINGLE_SESSION,e],queryFn:()=>u({queryKey:[S.SINGLE_SESSION,e]}),enabled:!!e});export{y as u};

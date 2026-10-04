@@ -1,0 +1,1 @@
+import{G as p,J as E}from"./index-PbeRhxf-.js";import{g as N}from"./sessions-1yxzUWv_.js";const g=({page:s,search_text:e,limit:o,case_id:r,client_id:S,date_from:t,date_to:u,reminder:a,admin_id:i,type:m,branch_id:n,status_id:y})=>p({queryKey:[E.SESSIONS,s,e,o,r,a?"1":"",S,t,u,i,m,n,y],queryFn:N});export{g as u};
