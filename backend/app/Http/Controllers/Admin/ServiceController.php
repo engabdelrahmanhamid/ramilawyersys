@@ -102,6 +102,9 @@ class ServiceController extends Controller
         if($validateService->operationType==ERROR){
             return $this->apiResponseMessage(0,$validateService->error,200);
         }
+        App::setLocale($request->header('lang'));
+        if ($this->serviceRepo->amountLockedByReceipts($service, $request))
+            return $this->apiResponseMessage(0, __('responseMessage.amount_locked_receipts_exist'));
         $data = $this->serviceRepo->update($request,$service);
         LogRepo::create($data,'service','update');
         return $this->apiResponseData(new ServiceResource($data));

@@ -27,12 +27,12 @@ class BranchMiddleware extends Middleware
     {
         App::setLocale($request->header('lang'));
         $admin = Auth::user();
-        if ($request->branch_id)
-            $request['branch_id'] = $request->branch_id;
-        else{
-            if ($admin)
-                $request['branch_id'] = $admin->super == 1 ? null : $admin->branch_id;
-    }
+        // Only super admins may look at another branch (or all branches);
+        // everyone else is always limited to their own branch, whatever the request asks for.
+        if ($admin && (int) $admin->super !== 1)
+            $request['branch_id'] = $admin->branch_id;
+        elseif (!$request->branch_id)
+            $request['branch_id'] = null;
         return $next($request);
 
     }

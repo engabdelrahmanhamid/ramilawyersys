@@ -25,6 +25,7 @@ return [
     'this_task_not_belong_to you'=>'هذه المهمه غير مخصصه لك',
     'dont_have_any_branches'=>'ليس لديك اي فروع',
     'invalid_amount'=>'القيمه المدفوعه اكبر من القيمه المطلوبه',
+    'amount_locked_receipts_exist'=>'لا يمكن تعديل المبلغ او الضريبه بعد انشاء السندات، عدّل السندات او احذفها اولا',
 
 ];
 

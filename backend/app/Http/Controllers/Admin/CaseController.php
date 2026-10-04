@@ -108,6 +108,9 @@ class CaseController extends Controller
         if($validateCase->operationType==ERROR){
             return $this->apiResponseMessage(0,$validateCase->error,200);
         }
+        App::setLocale($request->header('lang'));
+        if ($this->caseRepo->amountLockedByReceipts($case, $request))
+            return $this->apiResponseMessage(0, __('responseMessage.amount_locked_receipts_exist'));
         $this->caseStatusHistoryRepo->create($case,$request);
         $data = $this->caseRepo->update($request,$case);
         LogRepo::create($data,'case','update');

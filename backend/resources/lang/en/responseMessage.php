@@ -31,5 +31,6 @@ return [
     'this_task_not_belong_to you'=>'this task not belong to you',
     'dont_have_any_branches'=>'you dont belong to any branch',
     'invalid_amount'=>'pay amount is more than the required amount',
+    'amount_locked_receipts_exist'=>'amount or tax cannot be changed after receipts were created',
 ];
 

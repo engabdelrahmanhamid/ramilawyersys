@@ -22,6 +22,15 @@ return [
     'emailNotFount'=>'البريدالاكتروني غير موجود لدينا',
     'logout'=>'تم تسجيل الخروج بنجاح',
     'date_required'=>'من فضلك ادخل الميعاد',
-    'cannot_delete_client'=>'لا يمكن حذف هذا العميل'
+    'cannot_delete_client'=>'لا يمكن حذف هذا العميل',
+    'phone_invalid'=>'رقم الجوال يجب ان يكون ارقاما فقط (من 8 الى 15 رقما)',
+    'email_invalid'=>'صيغة البريد الالكتروني غير صحيحة',
+    'id_number_invalid'=>'رقم الهوية يجب ان يكون ارقاما فقط',
+    'phone_taken_by'=>'رقم الجوال مسجل مسبقا للعميل :name (رقم :id)',
+    'id_number_taken_by'=>'رقم الهوية مسجل مسبقا للعميل :name (رقم :id)',
+    'country_required'=>'من فضلك اختر الدولة',
+    'device_required'=>'من فضلك اختر وسيلة التواصل',
+    'source_required'=>'من فضلك اختر المصدر',
+    'client_type_required'=>'من فضلك اختر نوع العميل'
 ];
 

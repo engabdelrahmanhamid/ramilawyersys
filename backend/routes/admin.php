@@ -43,9 +43,9 @@ Route::middleware(['auth:api-Admin','branchMiddleware'])->group(function () {
             Route::get('/get', [\App\Http\Controllers\Admin\AdminController::class, 'get']);
             Route::get('/get_permissions', [\App\Http\Controllers\Admin\AdminController::class, 'get_permissions']);
             Route::get('/single', [\App\Http\Controllers\Admin\AdminController::class, 'single']);
-            Route::post('/create', [\App\Http\Controllers\Admin\AdminController::class, 'create']);
-            Route::post('/update', [\App\Http\Controllers\Admin\AdminController::class, 'update']);
-            Route::post('/delete', [\App\Http\Controllers\Admin\AdminController::class, 'delete']);
+            Route::post('/create', [\App\Http\Controllers\Admin\AdminController::class, 'create'])->middleware('superAdmin');
+            Route::post('/update', [\App\Http\Controllers\Admin\AdminController::class, 'update'])->middleware('superAdmin');
+            Route::post('/delete', [\App\Http\Controllers\Admin\AdminController::class, 'delete'])->middleware('superAdmin');
         });
 
         Route::prefix('admin_file')->group(function () {
@@ -91,9 +91,9 @@ Route::middleware(['auth:api-Admin','branchMiddleware'])->group(function () {
         Route::prefix('branch')->group(function () {
             Route::get('/get', [\App\Http\Controllers\Admin\BranchController::class, 'get']);
             Route::get('/single', [\App\Http\Controllers\Admin\BranchController::class, 'single']);
-            Route::post('/create', [\App\Http\Controllers\Admin\BranchController::class, 'create']);
-            Route::post('/update', [\App\Http\Controllers\Admin\BranchController::class, 'update']);
-            Route::post('/delete', [\App\Http\Controllers\Admin\BranchController::class, 'delete']);
+            Route::post('/create', [\App\Http\Controllers\Admin\BranchController::class, 'create'])->middleware('superAdmin');
+            Route::post('/update', [\App\Http\Controllers\Admin\BranchController::class, 'update'])->middleware('superAdmin');
+            Route::post('/delete', [\App\Http\Controllers\Admin\BranchController::class, 'delete'])->middleware('superAdmin');
         });
 
         Route::prefix('case_status')->group(function () {
@@ -140,9 +140,9 @@ Route::middleware(['auth:api-Admin','branchMiddleware'])->group(function () {
         Route::prefix('payment_method')->group(function () {
             Route::get('/get', [\App\Http\Controllers\Admin\PaymentMethodController::class, 'get']);
             Route::get('/single', [\App\Http\Controllers\Admin\PaymentMethodController::class, 'single']);
-            Route::post('/create', [\App\Http\Controllers\Admin\PaymentMethodController::class, 'create']);
-            Route::post('/update', [\App\Http\Controllers\Admin\PaymentMethodController::class, 'update']);
-            Route::post('/delete', [\App\Http\Controllers\Admin\PaymentMethodController::class, 'delete']);
+            Route::post('/create', [\App\Http\Controllers\Admin\PaymentMethodController::class, 'create'])->middleware('superAdmin');
+            Route::post('/update', [\App\Http\Controllers\Admin\PaymentMethodController::class, 'update'])->middleware('superAdmin');
+            Route::post('/delete', [\App\Http\Controllers\Admin\PaymentMethodController::class, 'delete'])->middleware('superAdmin');
         });
 
         Route::prefix('case_file')->group(function () {
@@ -293,7 +293,7 @@ Route::middleware(['auth:api-Admin','branchMiddleware'])->group(function () {
 
         Route::prefix('setting')->group(function () {
             Route::get('/get', [\App\Http\Controllers\Admin\SettingController::class, 'get']);
-            Route::post('/update', [\App\Http\Controllers\Admin\SettingController::class, 'update']);
+            Route::post('/update', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->middleware('superAdmin');
         });
 
         Route::prefix('date')->group(function () {

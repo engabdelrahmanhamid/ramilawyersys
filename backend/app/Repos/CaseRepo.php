@@ -173,5 +173,21 @@ class CaseRepo
         $case->save();
     }
 
+    /**
+     * Receipts are generated from the amount when the record is created, so changing the amount
+     * or tax afterwards leaves the receipts and the "remaining" figures out of sync.
+     *
+     * @param $case
+     * @param $payload
+     * @return bool
+     */
+    public function amountLockedByReceipts($case, $payload)
+    {
+        if (!\App\Models\CaseReceipt::where('case_id', $case->id)->exists())
+            return false;
+        $amountChanged = $payload->filled('amount') && round((float) $payload->amount, 2) != round((float) $case->amount, 2);
+        $taxChanged = $payload->filled('tax') && (int) $payload->tax != (int) $case->tax;
+        return $amountChanged || $taxChanged;
+    }
 
 }

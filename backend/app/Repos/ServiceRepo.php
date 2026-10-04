@@ -178,7 +178,21 @@ class ServiceRepo
         $service->save();
     }
 
-
-
+    /**
+     * Receipts are generated from the amount when the record is created, so changing the amount
+     * or tax afterwards leaves the receipts and the "remaining" figures out of sync.
+     *
+     * @param $service
+     * @param $payload
+     * @return bool
+     */
+    public function amountLockedByReceipts($service, $payload)
+    {
+        if (!\App\Models\ServiceReceipt::where('service_id', $service->id)->exists())
+            return false;
+        $amountChanged = $payload->filled('amount') && round((float) $payload->amount, 2) != round((float) $service->amount, 2);
+        $taxChanged = $payload->filled('tax') && (int) $payload->tax != (int) $service->tax;
+        return $amountChanged || $taxChanged;
+    }
 
 }

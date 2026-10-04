@@ -22,6 +22,15 @@ return [
     'emailNotFount'=>'email not fount',
     'logout'=>'logout successfully',
     'date_required'=>'please enter the date',
-    'cannot_delete_client'=>'you can not delete this client'
+    'cannot_delete_client'=>'you can not delete this client',
+    'phone_invalid'=>'phone must contain digits only (8 to 15)',
+    'email_invalid'=>'email format is not valid',
+    'id_number_invalid'=>'ID number must contain digits only',
+    'phone_taken_by'=>'this phone already belongs to client :name (#:id)',
+    'id_number_taken_by'=>'this ID number already belongs to client :name (#:id)',
+    'country_required'=>'please choose the country',
+    'device_required'=>'please choose the contact channel',
+    'source_required'=>'please choose the source',
+    'client_type_required'=>'please choose the client type'
 ];
 
