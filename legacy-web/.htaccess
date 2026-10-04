@@ -8,6 +8,8 @@ Options -Indexes
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+    # Hidden files (including the deploy state file) are never served
+    RewriteRule (^|/)\.(?!well-known/) - [F,L]
     # Never serve backups, dumps or old builds left in the web root
     RewriteRule ^(downloads|tt)(/|$) - [F,L]
     RewriteRule \.(zip|sql|bak|backup|before-backend-change|log|env)$ - [F,L,NC]
